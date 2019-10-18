@@ -5,13 +5,17 @@ clientSocket = socket(AF_INET, SOCK_STREAM)
 clientPort = 80
 print('Client socket has been created')
 
+request = input()
 try:
     clientSocket.connect(('', clientPort))
 except:
     print('Could not complete connection')
 
-clientSocket.sendall('simple_webpage.html'.encode())
-data = clientSocket.recv(1024)
+while request.lower().strip() != 'exit':
+    clientSocket.send(request.encode())
+    data = clientSocket.recv(1024).decode()
+
+    print('Recieved from server: ' + data)
+    request = input()
 
 clientSocket.close()
-print('Recieved', repr(data))

@@ -14,32 +14,29 @@ except:
     sys.exit()
 
 print('Ready to serve...')
-
+connectionSocket, addr = serverSocket.accept()
+print('Source Address: ' + str(addr))
 while True:
-    connectionSocket, addr = serverSocket.accept()
-    print('Source Address: ' + str(addr))
     try:
-        message = connectionSocket.recv(1024)
+        message = connectionSocket.recv(1024).decode()
         #filename = message.split()[1]
         filename = message
-        print('\nMessage: ')
+        print('\nRequest: ')
         print(message)
 
         f = open(filename)
         outputdata = f.read()
-        print(outputdata)
 
-        connectionSocket.send("\nHTTP 200 OK\n")
-        #connectionSocket.send(outputdata)
-
+        connectionSocket.send("HTTP 200 OK, press ENTER to show contents".encode())
+        connectionSocket.send(outputdata.encode())
         #Send the content of the requested file to the client
-        for i in range(0, len(outputdata)):
-            connectionSocket.send(outputdata[i].encode())
-        connectionSocket.send("\r\n".encode())
-
-        connectionSocket.close()
+        #for i in range(0, len(outputdata)):
+        #    connectionSocket.send(outputdata[i].encode())
+        #connectionSocket.send("\r\n".encode())
+        #connectionSocket.close()
     except IOError:
-        connectionSocket.send("\nHTTP ERROR 404 NOT FOUND\n")
+        connectionSocket.send("HTTP ERROR 404 NOT FOUND".encode())
 
+connectionSocket.close()
 serverSocket.close()
 sys.exit()
