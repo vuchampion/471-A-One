@@ -10,7 +10,7 @@ try:
 except:
     print('Could not complete connection')
 
-clientSocket.sendall('Hello, world'.encode())
+clientSocket.sendall('simple_webpage.html'.encode())
 data = clientSocket.recv(1024)
 
 clientSocket.close()

@@ -21,11 +21,11 @@ while True:
     try:
         message = connectionSocket.recv(1024)
         #filename = message.split()[1]
+        filename = message
         print('\nMessage: ')
         print(message)
 
-        '''
-        f = open(filename[1:])
+        f = open(filename)
         outputdata = f.read()
         print(outputdata)
 
@@ -37,7 +37,6 @@ while True:
             connectionSocket.send(outputdata[i].encode())
         connectionSocket.send("\r\n".encode())
 
-        '''
         connectionSocket.close()
     except IOError:
         connectionSocket.send("\nHTTP ERROR 404 NOT FOUND\n")
