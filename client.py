@@ -2,9 +2,9 @@ from socket import *
 import sys
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientRequest = str(sys.argv[1])
-clientPort = int(sys.argv[3])
-serverAddress = str(sys.argv[2])
+clientRequest = str(sys.argv[3])
+clientPort = int(sys.argv[2])
+serverAddress = str(sys.argv[1])
 print('Client socket has been created')
 
 try:
