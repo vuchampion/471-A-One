@@ -3,7 +3,7 @@ from socket import *
 import sys
 
 serverSocket = socket(AF_INET, SOCK_STREAM)
-serverPort = 80
+serverPort = 84
 print('Server socket has been created.')
 
 try:
@@ -14,10 +14,11 @@ except:
     sys.exit()
 
 print('Ready to serve...')
-connectionSocket, addr = serverSocket.accept()
-print('Source Address: ' + str(addr))
+#connectionSocket, addr = serverSocket.accept()
 while True:
     try:
+        connectionSocket, addr = serverSocket.accept()
+        print('Source Address: ' + str(addr))
         message = connectionSocket.recv(1024).decode()
         #filename = message.split()[1]
         filename = message
@@ -27,17 +28,19 @@ while True:
         f = open(filename)
         outputdata = f.read()
 
-        connectionSocket.send("HTTP 200 OK, press ENTER to show contents".encode())
-        connectionSocket.send(outputdata.encode())
+        #connectionSocket.send("HTTP 200 OK, press ENTER to show contents".encode())
+        connectionSocket.send(b'HTTP 200 OK ' + outputdata.encode())
         #Send the content of the requested file to the client
         #for i in range(0, len(outputdata)):
         #    connectionSocket.send(outputdata[i].encode())
         #connectionSocket.send("\r\n".encode())
         #connectionSocket.close()
+        connectionSocket.close()
     except IOError:
         connectionSocket.send("HTTP ERROR 404 NOT FOUND".encode())
-        continue
+        connectionSocket.close()
+        #continue
 
-connectionSocket.close()
+#connectionSocket.close()
 serverSocket.close()
 sys.exit()
