@@ -2,18 +2,21 @@ from socket import *
 import sys
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientPort = 80
+clientRequest = str(sys.argv[1])
+clientPort = int(sys.argv[3])
+serverAddress = str(sys.argv[2])
 print('Client socket has been created')
 
-request = input()
 try:
-    clientSocket.connect(('', clientPort))
+    clientSocket.connect((serverAddress, clientPort))
 except:
     print('Could not complete connection')
+    sys.exit()
 print('Connected with the server')
 
-clientSocket.send(request.encode())
+clientSocket.send(clientRequest.encode())
 data = clientSocket.recv(1024).decode()
 
-print('Recieved from server: ' + data)
+print('Recieved from server: \n' + data)
+print('Connection: close')
 clientSocket.close()

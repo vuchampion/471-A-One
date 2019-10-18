@@ -1,4 +1,3 @@
-#import socket module
 from socket import *
 import sys
 
@@ -14,27 +13,23 @@ except:
     sys.exit()
 
 print('Ready to serve...')
-#connectionSocket, addr = serverSocket.accept()
 while True:
     try:
         connectionSocket, addr = serverSocket.accept()
-        print('Source Address: ' + str(addr))
         message = connectionSocket.recv(1024).decode()
-        #filename = message.split()[1]
         filename = message
-        print('\nRequest: ')
-        print(message)
+        print('\nGET: ' + message + ' HTTP/1.1')
+        print('Host: ' + str(addr) + '\n')
 
         f = open(filename)
         outputdata = f.read()
 
-        connectionSocket.send(b'HTTP 200 OK ' + outputdata.encode())
-        connectionSocket.close() #THIS IS GOOD
+        connectionSocket.send(b'HTTP/1.1 200 OK ' + outputdata.encode())
+        print('Connection: close')
+        connectionSocket.close()
     except IOError:
         connectionSocket.send("HTTP ERROR 404 NOT FOUND".encode())
         connectionSocket.close()
-        #continue
 
-#connectionSocket.close()
 serverSocket.close()
 sys.exit()
