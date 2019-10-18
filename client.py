@@ -2,7 +2,7 @@ from socket import *
 import sys
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientPort = 84
+clientPort = 80
 print('Client socket has been created')
 
 request = input()
